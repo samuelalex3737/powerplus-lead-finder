@@ -32,7 +32,8 @@ Rules:
 - If information is not available, use null
 - Always return valid JSON, nothing else
 - Do not invent data that isn't in the source text
-- Be conservative with relevance scores`;
+- Be conservative with relevance scores
+- SANITY CHECK: If the article is completely unrelated to generators, power equipment, or relevant construction projects (e.g., medical research, culinary training, software), set "relevance_score": 1, set "project_name": "Irrelevant Article", and use null for all other fields. Do not fail.`;
 
 export const EXTRACTION_USER_PROMPT = (rawText: string, sourceName: string): string =>
   `Source: ${sourceName}\n\nRaw text to extract from:\n---\n${rawText}\n---\n\nExtract the structured lead data as JSON.`;

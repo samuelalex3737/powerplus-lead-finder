@@ -44,7 +44,7 @@ export async function extractLead(input: ExtractionInput): Promise<LeadInsert> {
         source_url: input.sourceUrl,
         raw_text: input.rawText,
         relevance_score: 3,
-        summary: 'AI extraction failed — manual review needed',
+        summary: `AI extraction failed: Groq error [${groqMsg}], OpenAI error [${openaiMsg}]`,
         industry: 'other',
         status: 'new',
       };

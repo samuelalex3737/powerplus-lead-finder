@@ -21,14 +21,47 @@ export class ZawyaScraper extends BaseScraper {
     'https://www.zawya.com/en/projects/transport',
   ];
 
-  // Broader keyword set that catches implicit generator demand signals
-  private readonly implicitKeywords = [
-    'power', 'energy', 'electricity', 'MW', 'megawatt', 'kVA',
-    'substation', 'generator', 'genset', 'diesel', 'cummins', 'perkins',
+  // Core keywords that strongly indicate generator demand
+  private readonly coreKeywords = [
+    'generator', 'genset', 'diesel', 'cummins', 'perkins', 'kVA',
+    'megawatt', 'substation', 'power supply', 'backup power', 'power plant',
+  ];
+
+  // Context keywords that need a general power term to be considered relevant
+  private readonly contextKeywords = [
     'data centre', 'data center', 'hospital', 'factory', 'industrial',
     'hotel', 'resort', 'mall', 'tower', 'warehouse', 'logistics',
     'desalination', 'water treatment', 'wastewater',
   ];
+
+  // General power terms to combine with context keywords
+  private readonly generalPowerTerms = ['power', 'energy', 'electricity', 'MW'];
+
+  private isRelevant(text: string, userKeywords: string[]): boolean {
+    // 1. User keywords always pass if matched
+    if (userKeywords.length > 0 && this.matchesKeywords(text, userKeywords)) return true;
+
+    // 2. Core keywords always pass
+    if (this.matchesKeywords(text, this.coreKeywords)) return true;
+
+    // 3. Context keywords ONLY pass if they co-occur with a general power term
+    if (this.matchesKeywords(text, this.contextKeywords) && this.matchesKeywords(text, this.generalPowerTerms)) {
+      return true;
+    }
+
+    return false;
+  }
+
+  /**
+   * Safely strip HTML tags, decode entities, and clean up whitespace.
+   */
+  private sanitizeText(html: string): string {
+    if (!html) return '';
+    // cheerio.load().text() safely strips all HTML tags and decodes entities like &amp; or &#39;
+    const plainText = cheerio.load(html).text();
+    // Clean up excessive whitespace
+    return plainText.replace(/\s+/g, ' ').trim();
+  }
 
   constructor(sourceId: string) {
     super();
@@ -39,12 +72,11 @@ export class ZawyaScraper extends BaseScraper {
     const items: ScrapedItem[] = [];
     const errors: string[] = [];
 
-    // Combine user keywords with implicit demand keywords
-    const allKeywords = [...keywords, ...this.implicitKeywords];
+    // Keywords are handled inside this.isRelevant()
 
     // 1. Try RSS feed first (most reliable, no proxy needed)
     try {
-      const rssItems = await this.scrapeRss(allKeywords);
+      const rssItems = await this.scrapeRss(keywords);
       items.push(...rssItems);
       console.log(`[ZawyaScraper] RSS: ${rssItems.length} matching items`);
     } catch (err) {
@@ -56,7 +88,7 @@ export class ZawyaScraper extends BaseScraper {
     // 2. Scrape project section pages
     for (const url of this.projectUrls) {
       try {
-        const pageItems = await this.scrapeProjectPage(url, allKeywords);
+        const pageItems = await this.scrapeProjectPage(url, keywords);
         items.push(...pageItems);
         console.log(`[ZawyaScraper] Projects page ${url}: ${pageItems.length} items`);
       } catch (err) {
@@ -120,16 +152,18 @@ export class ZawyaScraper extends BaseScraper {
 
       if (!title || !link) return;
 
-      const fullText = `${title} ${description}`;
+      const cleanTitle = this.sanitizeText(title);
+      const cleanDescription = this.sanitizeText(description);
 
-      // Check for UAE/GCC relevance AND keyword match
-      // We allow broader GCC matches since big projects in the region can need generators
+      const fullText = `${cleanTitle} ${cleanDescription}`;
+
+      // Check for UAE/GCC relevance AND tightened keyword match
       const regionRelevant = /UAE|Dubai|Abu Dhabi|Sharjah|Ajman|Ras Al Khaimah|Fujairah|Umm Al Quwain|United Arab Emirates|Saudi|Oman|Bahrain|Kuwait|Qatar|GCC/i.test(fullText);
 
-      if (regionRelevant && this.matchesKeywords(fullText, keywords)) {
+      if (regionRelevant && this.isRelevant(fullText, keywords)) {
         items.push({
-          title,
-          rawText: `${title}. ${description} (Published: ${pubDate})`,
+          title: cleanTitle,
+          rawText: `${cleanTitle}. ${cleanDescription} (Published: ${pubDate})`,
           sourceUrl: link,
           scrapedAt: new Date(),
         });
@@ -182,17 +216,19 @@ export class ZawyaScraper extends BaseScraper {
 
         if (!title) return;
 
-        const fullText = `${title} ${summary}`;
+        const cleanTitle = this.sanitizeText(title);
+        const cleanSummary = this.sanitizeText(summary);
+        const fullText = `${cleanTitle} ${cleanSummary}`;
 
         // Projects section is already region-relevant, so just check keywords
-        if (this.matchesKeywords(fullText, keywords)) {
+        if (this.isRelevant(fullText, keywords)) {
           const absoluteUrl = link.startsWith('http')
             ? link
             : `https://www.zawya.com${link}`;
 
           items.push({
-            title,
-            rawText: `${title}. ${summary}`,
+            title: cleanTitle,
+            rawText: `${cleanTitle}. ${cleanSummary}`,
             sourceUrl: absoluteUrl,
             scrapedAt: new Date(),
           });
