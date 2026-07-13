@@ -29,6 +29,7 @@ export interface Lead {
   relevance_score: number;
   summary: string | null;
   status: LeadStatus;
+  explicit_mention?: boolean;
   created_at: string;
   updated_at: string;
   // Joined from sources table
@@ -49,6 +50,7 @@ export interface LeadInsert {
   relevance_score?: number;
   summary?: string | null;
   status?: LeadStatus;
+  explicit_mention?: boolean;
 }
 
 export interface Source {

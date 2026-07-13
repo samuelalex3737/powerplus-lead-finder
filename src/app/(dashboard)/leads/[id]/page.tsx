@@ -40,6 +40,14 @@ export default async function LeadDetailPage({ params }: LeadPageProps) {
 
       <main className="dashboard-content">
         <div className="glass-card" style={{ padding: 24, marginBottom: 24 }}>
+          {lead.explicit_mention === false && (
+            <div style={{ background: 'rgba(239, 68, 68, 0.1)', borderLeft: '4px solid #ef4444', padding: '12px 16px', borderRadius: '0 8px 8px 0', marginBottom: 20 }}>
+              <h3 style={{ margin: '0 0 4px', fontSize: 14, color: '#ef4444', fontWeight: 700 }}>⚠️ Background Context Only</h3>
+              <p style={{ margin: 0, fontSize: 13, color: '#fca5a5' }}>
+                This article was flagged by the system because it matched industry keywords (like infrastructure or expansion), but it <strong>does not explicitly mention</strong> generators, backup power, or power equipment. Ensure you verify the lead manually.
+              </p>
+            </div>
+          )}
           <div style={{ display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between', gap: 20 }}>
             <div>
               <h2 style={{ fontSize: 24, fontWeight: 700, margin: '0 0 8px', color: '#f1f5f9' }}>

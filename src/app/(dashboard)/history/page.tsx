@@ -388,6 +388,7 @@ export default async function HistoryPage({ searchParams }: HistoryPageProps) {
                             idx < leads.length - 1
                               ? '1px solid rgba(51, 65, 85, 0.3)'
                               : 'none',
+                          opacity: lead.explicit_mention === false ? 0.6 : 1,
                         }}
                       >
                         {/* Date */}
@@ -412,6 +413,11 @@ export default async function HistoryPage({ searchParams }: HistoryPageProps) {
                           >
                             {lead.project_name}
                           </Link>
+                          {lead.explicit_mention === false && (
+                            <span style={{ marginLeft: 8, fontSize: 11, padding: '2px 6px', background: 'rgba(239, 68, 68, 0.1)', color: '#ef4444', borderRadius: 4, fontWeight: 600 }}>
+                              Background Signal
+                            </span>
+                          )}
                           {lead.buyer_organization && (
                             <div style={{ fontSize: 12, color: '#64748b', marginTop: 2 }}>
                               {lead.buyer_organization}
@@ -481,6 +487,11 @@ export default async function HistoryPage({ searchParams }: HistoryPageProps) {
                       >
                         {lead.project_name}
                       </Link>
+                      {lead.explicit_mention === false && (
+                        <span style={{ marginLeft: 8, fontSize: 11, padding: '2px 6px', background: 'rgba(239, 68, 68, 0.1)', color: '#ef4444', borderRadius: 4, fontWeight: 600, verticalAlign: 'middle' }}>
+                          Background Signal
+                        </span>
+                      )}
                       {lead.buyer_organization && (
                         <div style={{ fontSize: 12, color: '#64748b', marginTop: 2 }}>
                           {lead.buyer_organization}

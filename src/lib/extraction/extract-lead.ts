@@ -47,6 +47,7 @@ export async function extractLead(input: ExtractionInput): Promise<LeadInsert> {
         summary: `AI extraction failed: Groq error [${groqMsg}], OpenAI error [${openaiMsg}]`,
         industry: 'other',
         status: 'new',
+        explicit_mention: false,
       };
     }
   }
@@ -68,6 +69,7 @@ export async function extractLead(input: ExtractionInput): Promise<LeadInsert> {
     source_url: input.sourceUrl,
     raw_text: input.rawText,
     relevance_score: extracted.relevance_score,
+    explicit_mention: extracted.explicit_mention ?? false,
     summary: extracted.summary,
     status: 'new',
   };
