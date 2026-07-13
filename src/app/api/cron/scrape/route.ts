@@ -17,7 +17,7 @@ export async function GET(request: Request) {
   }
 
   try {
-    const result = await runScrape();
+    const result = await runScrape('cron');
     return NextResponse.json({
       success: true,
       ...result,

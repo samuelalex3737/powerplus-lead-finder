@@ -18,12 +18,34 @@ const navItems = [
     ),
   },
   {
+    href: '/history',
+    label: 'History',
+    icon: (
+      <svg width="20" height="20" viewBox="0 0 20 20" fill="none" stroke="currentColor" strokeWidth="1.8">
+        <circle cx="10" cy="10" r="8" />
+        <path d="M10 5v5l3.5 2" />
+        <path d="M4 10H2M18 10h-2" />
+      </svg>
+    ),
+  },
+  {
     href: '/manual-add',
     label: 'Add Lead',
     icon: (
       <svg width="20" height="20" viewBox="0 0 20 20" fill="none" stroke="currentColor" strokeWidth="1.8">
         <circle cx="10" cy="10" r="8" />
         <path d="M10 6v8M6 10h8" />
+      </svg>
+    ),
+  },
+  {
+    href: '/scrape-log',
+    label: 'Scrape Log',
+    icon: (
+      <svg width="20" height="20" viewBox="0 0 20 20" fill="none" stroke="currentColor" strokeWidth="1.8">
+        <path d="M3 3h14v14H3z" />
+        <path d="M3 7h14M7 3v14" />
+        <path d="M10 10h4M10 13h4" />
       </svg>
     ),
   },

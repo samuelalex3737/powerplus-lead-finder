@@ -17,7 +17,7 @@ export async function POST() {
   }
 
   try {
-    const result = await runScrape();
+    const result = await runScrape('manual');
     return NextResponse.json({
       success: true,
       ...result,

@@ -1,4 +1,5 @@
 import * as cheerio from 'cheerio';
+import type { Element } from 'domhandler';
 import { BaseScraper, ScrapedItem, ScraperResult } from './base-scraper';
 
 /**
@@ -89,9 +90,9 @@ export class DubizzleScraper extends BaseScraper {
       if ($listings.length > 0) break;
     }
 
-    $listings.each((_: number, el: any) => {
+    $listings.each((_: number, el: unknown) => {
       try {
-        const $el = $(el);
+        const $el = $(el as Element);
         const title = $el.find('h2, h3, [class*="title"]').first().text().trim() || $el.find('a').first().text().trim();
         const description = $el.find('p, [class*="desc"], [class*="detail"]').text().trim();
         const price = $el.find('[class*="price"]').text().trim();
