@@ -68,7 +68,8 @@ export class ZawyaScraper extends BaseScraper {
   }
 
   private async scrapeRss(keywords: string[]): Promise<ScrapedItem[]> {
-    const response = await fetch(this.rssUrl, {
+    const proxyUrl = `https://api.allorigins.win/raw?url=${encodeURIComponent(this.rssUrl)}`;
+    const response = await fetch(proxyUrl, {
       headers: {
         'User-Agent': this.getRandomUserAgent(),
         'Accept': 'application/rss+xml, application/xml, text/xml, */*',
@@ -110,7 +111,8 @@ export class ZawyaScraper extends BaseScraper {
   }
 
   private async scrapeProjectPage(url: string, keywords: string[]): Promise<ScrapedItem[]> {
-    const response = await fetch(url, {
+    const proxyUrl = `https://api.allorigins.win/raw?url=${encodeURIComponent(url)}`;
+    const response = await fetch(proxyUrl, {
       headers: {
         'User-Agent': this.getRandomUserAgent(),
         'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8',

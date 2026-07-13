@@ -56,7 +56,8 @@ export class DubizzleScraper extends BaseScraper {
   }
 
   private async scrapePage(url: string, keywords: string[]): Promise<ScrapedItem[]> {
-    const response = await fetch(url, {
+    const proxyUrl = `https://api.allorigins.win/raw?url=${encodeURIComponent(url)}`;
+    const response = await fetch(proxyUrl, {
       headers: {
         'User-Agent': this.getRandomUserAgent(),
         'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8',
