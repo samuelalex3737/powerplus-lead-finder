@@ -11,6 +11,7 @@ interface ExtractedLead {
   deadline_date: string | null;
   contact_info: string | null;
   relevance_score: number;
+  explicit_mention: boolean;
   summary: string;
 }
 
