@@ -18,7 +18,6 @@ export class ZawyaScraper extends BaseScraper {
   private readonly projectUrls = [
     'https://www.zawya.com/en/projects/construction',
     'https://www.zawya.com/en/projects/utilities',
-    'https://www.zawya.com/en/projects/transport',
   ];
 
   // Core keywords that strongly indicate generator demand
@@ -85,20 +84,23 @@ export class ZawyaScraper extends BaseScraper {
       console.error('[ZawyaScraper] RSS error:', message);
     }
 
-    // 2. Scrape project section pages
-    for (const url of this.projectUrls) {
+    // 2. Scrape project section pages concurrently to reduce delay
+    const pagePromises = this.projectUrls.map(async (url) => {
       try {
         const pageItems = await this.scrapeProjectPage(url, keywords);
-        items.push(...pageItems);
         console.log(`[ZawyaScraper] Projects page ${url}: ${pageItems.length} items`);
+        return pageItems;
       } catch (err) {
         const message = err instanceof Error ? err.message : String(err);
         errors.push(`Failed to scrape ${url}: ${message}`);
         console.error(`[ZawyaScraper] Error scraping ${url}:`, message);
+        return [];
       }
+    });
 
-      // Rate limiting: 2-second delay between fetches
-      await this.delay(2000);
+    const pageResults = await Promise.all(pagePromises);
+    for (const res of pageResults) {
+      items.push(...res);
     }
 
     // Deduplicate by URL

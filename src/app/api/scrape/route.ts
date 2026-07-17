@@ -7,6 +7,8 @@ import { runScrape } from '@/lib/pipeline/run-scrape';
  * Manual scrape trigger from dashboard "Scrape Now" button.
  * Authenticated via session cookie (same as middleware).
  */
+export const maxDuration = 60; // Allow up to 60s for Vercel serverless execution
+
 export async function POST() {
   // Verify session
   const cookieStore = await cookies();
