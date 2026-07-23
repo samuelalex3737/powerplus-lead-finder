@@ -1,7 +1,6 @@
 import { createAdminClient } from '@/lib/supabase/admin';
 import type { Source, Keyword } from '@/types/database';
 import { BaseScraper, ScraperResult } from './base-scraper';
-import { ZawyaScraper } from './zawya-scraper';
 import { PlaceholderScraper } from './placeholder-scraper';
 
 // NOTE: DubizzleScraper is intentionally NOT imported.
@@ -12,8 +11,13 @@ import { PlaceholderScraper } from './placeholder-scraper';
 
 // Map source names to their scraper factory functions
 const SCRAPER_MAP: Record<string, (sourceId: string) => BaseScraper> = {
-  // === WORKING SCRAPERS ===
-  'Zawya News': (id) => new ZawyaScraper(id),
+  // === BLOCKED: robots.txt ===
+  'Zawya News': (id) =>
+    new PlaceholderScraper(
+      'Zawya News',
+      id,
+      'Blocked — Zawya updated robots.txt to prohibit automated access.'
+    ),
 
   // === DISABLED: Cloudflare-blocked ===
   'Dubizzle UAE - Business & Industrial': (id) =>

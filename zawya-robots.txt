@@ -1,0 +1,554 @@
+# robots.txt for www.zawya.com
+# Zawya — Financial News & Information Platform (LSEG)
+#
+# Last updated: 2026-06-01
+#
+# Strategy:
+# - Allow major search engines (Googlebot, Bingbot) and social card bots
+# - Block AI/LLM training crawlers
+# - Block Python scraping libraries
+# - Block feed aggregators and content scrapers
+# - Block unnecessary SEO crawlers
+# - Block monitoring/security scanners
+# - Disallow internal/account/API paths from all crawlers
+#
+# =============================================================================
+# DEFAULT — Allow editorial content, block internal paths
+# =============================================================================
+
+User-agent: *
+Allow: /en/
+Allow: /ar/
+Allow: /company/
+
+# Internal / non-indexable paths
+Disallow: /api/
+Disallow: /account/
+Disallow: /access-denied
+Disallow: /error-4xx
+Disallow: /error-5xx
+Disallow: /preview/
+
+# Locale-prefixed internal paths
+Disallow: /en/login
+Disallow: /ar/login
+Disallow: /en/register
+Disallow: /ar/register
+Disallow: /en/my-account
+Disallow: /ar/my-account
+Disallow: /en/account/
+Disallow: /ar/account/
+Disallow: /en/search
+Disallow: /ar/search
+
+# Sitemaps
+Disallow: /sitemaps/
+
+Crawl-delay: 5
+
+# =============================================================================
+# SEARCH ENGINES — Explicitly allowed (no crawl-delay)
+# =============================================================================
+
+User-agent: Googlebot
+Allow: /
+Disallow: /api/
+Disallow: /account/
+Disallow: /access-denied
+Disallow: /error-4xx
+Disallow: /error-5xx
+Disallow: /preview/
+Disallow: /en/login
+Disallow: /ar/login
+Disallow: /en/register
+Disallow: /ar/register
+Disallow: /en/my-account
+Disallow: /ar/my-account
+Disallow: /en/account/
+Disallow: /ar/account/
+Disallow: /en/search
+Disallow: /ar/search
+
+User-agent: Googlebot-Image
+Allow: /
+
+User-agent: Bingbot
+Allow: /
+Disallow: /api/
+Disallow: /account/
+Disallow: /access-denied
+Disallow: /error-4xx
+Disallow: /error-5xx
+Disallow: /preview/
+Disallow: /en/login
+Disallow: /ar/login
+Disallow: /en/register
+Disallow: /ar/register
+Disallow: /en/my-account
+Disallow: /ar/my-account
+Disallow: /en/account/
+Disallow: /ar/account/
+Disallow: /en/search
+Disallow: /ar/search
+
+User-agent: Slurp
+Allow: /
+
+User-agent: DuckDuckBot
+Allow: /
+
+User-agent: Yandex
+Allow: /
+
+# =============================================================================
+# SOCIAL CARD / LINK PREVIEW BOTS — Explicitly allowed
+# =============================================================================
+
+User-agent: Twitterbot
+Allow: /
+
+User-agent: LinkedInBot
+Allow: /
+
+User-agent: Slackbot
+Allow: /
+
+User-agent: Slackbot-LinkExpanding
+Allow: /
+
+User-agent: WhatsApp
+Allow: /
+
+User-agent: Discordbot
+Allow: /
+
+User-agent: facebookexternalhit
+Allow: /
+
+User-agent: Applebot
+Allow: /
+
+User-agent: TelegramBot
+Allow: /
+
+# =============================================================================
+# GOOGLE NEWS — Editorial content only
+# =============================================================================
+
+User-agent: Googlebot-News
+Allow: /en/mena
+Allow: /en/uae
+Allow: /en/saudi-arabia
+Allow: /en/world
+Allow: /en/economy
+Allow: /en/business
+Allow: /en/capital-markets
+Allow: /en/markets
+Allow: /en/wealth
+Allow: /en/legal
+Allow: /en/life
+Allow: /en/opinion
+Allow: /en/press-release
+Allow: /en/news/
+Allow: /en/latest-news
+Allow: /en/top-stories
+Allow: /en/islamic-economy
+Allow: /en/smes
+Allow: /en/projects
+Allow: /en/multimedia
+Allow: /en/topic/
+Allow: /en/author/
+Allow: /ar/
+Disallow: /en/account/
+Disallow: /ar/account/
+Disallow: /en/search
+Disallow: /ar/search
+Disallow: /api/
+Disallow: /en/login
+Disallow: /ar/login
+Disallow: /en/register
+Disallow: /ar/register
+Disallow: /en/companies/find-companies
+Disallow: /en/events
+Disallow: /en/reports
+
+# =============================================================================
+# GOOGLE ADS — Limited access for contextual targeting
+# =============================================================================
+
+User-agent: Mediapartners-Google
+Allow: /
+Disallow: /api/
+Disallow: /account/
+Disallow: /en/account/
+Disallow: /ar/account/
+
+# Ad verification bot (Oracle/Grapeshot) — allowed for ad targeting
+User-agent: grapeshot
+Allow: /
+
+# =============================================================================
+# AI / LLM BOTS — Fully blocked
+# =============================================================================
+
+# OpenAI
+User-agent: GPTBot
+Disallow: /
+
+User-agent: ChatGPT-User
+Disallow: /
+
+User-agent: OAI-SearchBot
+Disallow: /
+
+# Anthropic
+User-agent: Claude-Web
+Disallow: /
+
+User-agent: ClaudeBot
+Disallow: /
+
+User-agent: anthropic-ai
+Disallow: /
+
+# Common Crawl (used for AI training datasets)
+User-agent: CCBot
+Disallow: /
+
+# Perplexity
+User-agent: PerplexityBot
+Disallow: /
+
+# You.com
+User-agent: YouBot
+Disallow: /
+
+# Google AI training (not search)
+User-agent: Google-Extended
+Disallow: /
+
+# Apple AI training (not search)
+User-agent: Applebot-Extended
+Disallow: /
+
+# Cohere
+User-agent: cohere-ai
+Disallow: /
+
+# AI2 (Allen Institute)
+User-agent: AI2Bot
+Disallow: /
+
+# Timpi
+User-agent: Timpibot
+Disallow: /
+
+# iAsk.ai
+User-agent: iaskspider
+Disallow: /
+
+# Meta AI training
+User-agent: Meta-ExternalAgent
+Disallow: /
+
+User-agent: FacebookBot
+Disallow: /
+
+# Mistral
+User-agent: MistralBot
+Disallow: /
+
+# =============================================================================
+# GOOGLE SERVICES — Non-search, blocked
+# =============================================================================
+
+User-agent: Google-Apps
+Disallow: /
+
+User-agent: Google-Apps-Script
+Disallow: /
+
+User-agent: AppEngine-Google
+Disallow: /
+
+User-agent: Google-Cloud
+Disallow: /
+
+User-agent: Google-CloudVertexBot
+Disallow: /
+
+# =============================================================================
+# MAJOR COMPANY BOTS — Blocked
+# =============================================================================
+
+User-agent: AmazonBot
+Disallow: /
+
+User-agent: AmazonAdBot
+Disallow: /
+
+User-agent: ByteSpider
+Disallow: /
+
+User-agent: Bytedance
+Disallow: /
+
+# =============================================================================
+# FEED & CONTENT AGGREGATORS — Mixed
+# =============================================================================
+
+# Feedly — allowed. RSS readers drive engaged traffic to news sites.
+User-agent: Feedly
+Allow: /
+
+User-agent: FeedlyBot
+Allow: /
+
+User-agent: FeedlyApp
+Allow: /
+
+# Content scrapers — blocked (republish content without attribution)
+User-agent: MWFeedParser
+Disallow: /
+
+User-agent: Diffbot
+Disallow: /
+
+User-agent: Spinn3r
+Disallow: /
+
+User-agent: Omgilibot
+Disallow: /
+
+User-agent: Omgili
+Disallow: /
+
+User-agent: Netvibes
+Disallow: /
+
+# =============================================================================
+# SEO CRAWLERS — Blocked
+# =============================================================================
+
+User-agent: MJ12bot
+Disallow: /
+
+User-agent: PetalBot
+Disallow: /
+
+User-agent: YisouSpider
+Disallow: /
+
+User-agent: 360Spider
+Disallow: /
+
+User-agent: Qwantify
+Disallow: /
+
+User-agent: ToutiaoSpider
+Disallow: /
+
+User-agent: Screaming Frog SEO Spider
+Disallow: /
+
+User-agent: rogerbot
+Disallow: /
+
+User-agent: linkdexbot
+Disallow: /
+
+User-agent: AudistoBot
+Disallow: /
+
+User-agent: WebCEO
+Disallow: /
+
+# SemrushBot — allowed for SEO team auditing
+User-agent: SemrushBot
+Allow: /
+
+User-agent: AhrefsBot
+Disallow: /
+
+User-agent: DotBot
+Disallow: /
+
+# =============================================================================
+# ANALYTICS & MARKETING — Mixed
+# =============================================================================
+
+# comScore — allowed for audience measurement (used by LSEG/ad partners)
+User-agent: comscore
+Allow: /
+
+# HubSpot — allowed for marketing email link previews
+User-agent: HubSpot
+Allow: /
+
+# Criteo — allowed for retargeting ad campaigns
+User-agent: Criteo
+Allow: /
+
+User-agent: criteo-bot
+Allow: /
+
+# Ad verification — blocked (no value, just scraping)
+User-agent: Peer39_Crawler
+Disallow: /
+
+User-agent: NTENT
+Disallow: /
+
+User-agent: AndersPinkBot
+Disallow: /
+
+User-agent: IndeedBot
+Disallow: /
+
+# =============================================================================
+# MONITORING & SECURITY SCANNERS — Blocked
+# =============================================================================
+
+User-agent: PRTG
+Disallow: /
+
+User-agent: FreshpingBot
+Disallow: /
+
+User-agent: Panopta
+Disallow: /
+
+User-agent: DatadogSynthetics
+Disallow: /
+
+User-agent: Rackspace
+Disallow: /
+
+User-agent: censys
+Disallow: /
+
+User-agent: burp
+Disallow: /
+
+User-agent: Burp
+Disallow: /
+
+User-agent: check_http
+Disallow: /
+
+User-agent: DotcomMonitor
+Disallow: /
+
+User-agent: WatchSumo
+Disallow: /
+
+User-agent: WormlyBot
+Disallow: /
+
+User-agent: CalibreBot
+Disallow: /
+
+# =============================================================================
+# SOCIAL & CONTENT SCRAPERS — Blocked
+# =============================================================================
+
+User-agent: Hatena
+Disallow: /
+
+User-agent: Hatena-Bookmark
+Disallow: /
+
+User-agent: EveryoneSocialBot
+Disallow: /
+
+User-agent: Postano
+Disallow: /
+
+User-agent: RebelMouse
+Disallow: /
+
+User-agent: Muck-Rack
+Disallow: /
+
+User-agent: InstapaperViewer
+Disallow: /
+
+User-agent: Twurly
+Disallow: /
+
+User-agent: LivelapBot
+Disallow: /
+
+User-agent: DatagnionBot
+Disallow: /
+
+User-agent: Linespider
+Disallow: /
+
+User-agent: Discourse
+Disallow: /
+
+# =============================================================================
+# PYTHON SCRAPING LIBRARIES — Blocked
+# =============================================================================
+
+User-agent: Python-urllib
+Disallow: /
+
+User-agent: python-requests
+Disallow: /
+
+User-agent: Python-http-client
+Disallow: /
+
+User-agent: Scrapy
+Disallow: /
+
+User-agent: httpx
+Disallow: /
+
+User-agent: aiohttp
+Disallow: /
+
+User-agent: Go-http-client
+Disallow: /
+
+User-agent: Java
+Disallow: /
+
+# =============================================================================
+# POTENTIALLY MALICIOUS — Blocked
+# =============================================================================
+
+User-agent: Medusa
+Disallow: /
+
+User-agent: pingback
+Disallow: /
+
+User-agent: WordPress
+Disallow: /
+
+User-agent: wp_ping
+Disallow: /
+
+User-agent: MauiBot
+Disallow: /
+
+User-agent: ltx71
+Disallow: /
+
+User-agent: WeSEE
+Disallow: /
+
+User-agent: halebot
+Disallow: /
+
+User-agent: BrightBot
+Disallow: /
+
+# =============================================================================
+# SITEMAP
+# =============================================================================
+
+Sitemap: https://zawya.com/sitemap.xml
