@@ -123,17 +123,43 @@ export class ZawyaScraper extends BaseScraper {
   }
 
   private async scrapeRss(keywords: string[]): Promise<ScrapedItem[]> {
-    // Direct fetch — Zawya RSS is publicly accessible, no proxy needed
-    const response = await fetch(this.rssUrl, {
-      headers: {
-        'User-Agent': this.getRandomUserAgent(),
-        'Accept': 'application/rss+xml, application/xml, text/xml, */*',
-      },
-      signal: AbortSignal.timeout(15000), // 15s timeout
-    });
+    let response: Response | undefined;
+    let attempt = 1;
+    const maxAttempts = 2;
 
-    if (!response.ok) {
-      throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+    while (attempt <= maxAttempts) {
+      try {
+        response = await fetch(this.rssUrl, {
+          headers: {
+            // Mimic standard Feedly RSS reader to avoid generic automated blocks
+            'User-Agent': 'Feedly/1.0 (+http://www.feedly.com/fetcher.html; like FeedFetcher-Google)',
+            'Accept': 'application/rss+xml, application/xml, text/xml, */*',
+          },
+          signal: AbortSignal.timeout(15000), // 15s timeout
+        });
+
+        if (response.ok) break;
+
+        if (response.status === 403) {
+          if (attempt < maxAttempts) {
+            console.warn(`[ZawyaScraper] RSS returned HTTP 403 on attempt ${attempt}. Zawya's robots.txt actively blocks feed aggregators. Waiting 10s before retry to stay within serverless limits...`);
+            await new Promise((resolve) => setTimeout(resolve, 10000));
+          } else {
+            throw new Error(`HTTP 403 Forbidden: Zawya has permanently blocked RSS access. Their robots.txt explicitly blocks "feed aggregators and content scrapers".`);
+          }
+        } else {
+          throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+        }
+      } catch (err: any) {
+        if (attempt >= maxAttempts) throw err;
+        console.warn(`[ZawyaScraper] RSS fetch failed on attempt ${attempt}: ${err.message}. Retrying...`);
+        await new Promise((resolve) => setTimeout(resolve, 10000));
+      }
+      attempt++;
+    }
+
+    if (!response || !response.ok) {
+      throw new Error(`Failed to fetch RSS after ${maxAttempts} attempts`);
     }
 
     const xml = await response.text();
